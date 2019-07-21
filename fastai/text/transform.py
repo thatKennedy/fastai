@@ -116,7 +116,7 @@ class Tokenizer():
     def process_all(self, texts:Collection[str]) -> List[List[str]]:
         "Process a list of `texts`."
         if self.n_cpus <= 1: return self._process_all_1(texts)
-        with ProcessPoolExecutor(self.n_cpus) as e:
+        with ThreadPoolExecutor(max_workers=1) as e:
             return sum(e.map(self._process_all_1, partition_by_cores(texts, self.n_cpus)), [])
 
 class Vocab():
